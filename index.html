@@ -3631,8 +3631,15 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     document.getElementById('t5-g').style.opacity = '';
     document.getElementById('t6-g').style.opacity = '';
     document.getElementById('bomb-g').style.opacity = '';
-    const hostageCircle = document.getElementById('t2-g').querySelector('.hostage-mark');
+    const t2gReset = document.getElementById('t2-g');
+    ['enemy-body', 'enemy-helmet', 'enemy-weapon'].forEach(cls => {
+      const el = t2gReset.querySelector('.' + cls);
+      if (el) el.style.opacity = '';
+    });
+    const hostageCircle = t2gReset.querySelector('.hostage-mark');
     hostageCircle.setAttribute('fill', '#c9c4b0');
+    const hostageLine = t2gReset.querySelector('.hostage-line');
+    hostageLine.setAttribute('stroke', '#c9c4b0');
     const timerFill = document.getElementById('bomb-timer-fill');
     timerFill.style.transition = 'none';
     timerFill.setAttribute('width', '80');
@@ -5321,9 +5328,27 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
         if (t5Cleared && hasT5) markThreatDead('T5');
         if (t6Cleared && hasT6) markThreatDead('T6');
         if (t2Cleared) {
-          document.getElementById('t2-g').style.transition = 'opacity 0.3s ease';
-          document.getElementById('t2-g').style.opacity = hostageSafe ? '0.15' : '0.5';
-          if (!hostageSafe) document.getElementById('t2-g').querySelector('.hostage-mark').setAttribute('fill', 'var(--danger)');
+          const t2g = document.getElementById('t2-g');
+          const hostageMark = t2g.querySelector('.hostage-mark');
+          const hostageLine = t2g.querySelector('.hostage-line');
+          if (hostageSafe) {
+            // Otage sauvé : seul le garde s'efface (neutralisé) — la marque
+            // de l'otage reste bien visible et vire au vert "sain et sauf",
+            // au lieu de se fondre dans le décor comme un ennemi mort.
+            ['enemy-body', 'enemy-helmet', 'enemy-weapon'].forEach(cls => {
+              const el = t2g.querySelector('.' + cls);
+              if (el) {
+                el.style.transition = 'opacity 0.4s ease';
+                el.style.opacity = '0.15';
+              }
+            });
+            if (hostageMark) hostageMark.setAttribute('fill', 'var(--ok)');
+            if (hostageLine) hostageLine.setAttribute('stroke', 'var(--ok)');
+          } else {
+            t2g.style.transition = 'opacity 0.3s ease';
+            t2g.style.opacity = '0.5';
+            if (hostageMark) hostageMark.setAttribute('fill', 'var(--danger)');
+          }
         }
       }, maxDelay - 500);
     }
