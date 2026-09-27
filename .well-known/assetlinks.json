@@ -7,5 +7,14 @@
       "sha256_cert_fingerprints":
         ["A0:5C:1B:BC:D9:29:F7:60:F8:7D:6C:21:15:C8:3E:E6:14:CF:7B:C9:A2:50:8C:C9:6A:75:E5:1F:5B:70:D8:C6"]
     }
+  },
+  {
+    "relation": ["delegate_permission/common.use_as_origin"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.breachsixgames.tacticalsquad",
+      "sha256_cert_fingerprints":
+        ["A0:5C:1B:BC:D9:29:F7:60:F8:7D:6C:21:15:C8:3E:E6:14:CF:7B:C9:A2:50:8C:C9:6A:75:E5:1F:5B:70:D8:C6"]
+    }
   }
 ]
