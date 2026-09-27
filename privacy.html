@@ -6,134 +6,124 @@
 <title>Politique de confidentialité — BreachSix: Tactical Squad</title>
 <style>
   :root {
-    --ink: #1a1a1a;
-    --ink-dim: #555;
-    --bg: #fdfdfb;
-    --panel: #f4f2ec;
-    --accent: #8a6d1f;
-    --border: #ddd6c3;
+    --bg: #f7f6f3;
+    --text: #1c1c1a;
+    --muted: #55534d;
+    --accent: #b98a2e;
+    --border: #ddd8cc;
+    --warn-bg: #fff3cd;
+    --warn-border: #e0b400;
+    --warn-text: #6b5200;
   }
-  * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 0;
-    background: var(--bg); color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     line-height: 1.6;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 20px 64px;
   }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 20px 80px; }
-  .banner {
-    background: #fff3cd; border: 1px solid #e0c675; color: #6b5314;
-    border-radius: 8px; padding: 14px 18px; margin-bottom: 32px;
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+  .draft-banner {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    color: var(--warn-text);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-bottom: 28px;
+    font-size: 0.95rem;
+  }
+  h2 {
+    font-size: 1.15rem;
+    margin-top: 32px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+  p { margin: 10px 0; }
+  ul { margin: 10px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
     font-size: 0.92rem;
   }
-  .banner strong { display: block; margin-bottom: 4px; }
-  h1 { font-size: 1.6rem; margin-bottom: 4px; }
-  .subtitle { color: var(--ink-dim); font-size: 0.9rem; margin-bottom: 32px; }
-  h2 {
-    font-size: 1.15rem; margin-top: 36px; margin-bottom: 10px;
-    padding-bottom: 6px; border-bottom: 1px solid var(--border);
-    color: var(--accent);
+  th, td {
+    text-align: left;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
   }
-  p, li { font-size: 0.96rem; }
-  ul { padding-left: 22px; }
-  li { margin-bottom: 6px; }
-  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 0.9rem; }
-  th, td { text-align: left; padding: 8px 10px; border: 1px solid var(--border); vertical-align: top; }
-  th { background: var(--panel); }
+  th { background: #eeeae0; }
   a { color: var(--accent); }
-  .contact-box {
-    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
-    padding: 16px 18px; margin-top: 8px;
+  .updated {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 40px;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
   }
-  footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--ink-dim); font-size: 0.82rem; }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="banner">
-    <strong>Document de travail — en attente de révision par un professionnel du droit</strong>
-    Ce texte n'a pas encore été validé par un avocat. Il reflète l'intention et le fonctionnement réel de l'application à la date ci-dessous, mais ne doit pas être considéré comme définitif avant révision juridique.
-  </div>
+  <div class="draft-banner">⚠️ Document de travail — cette politique de confidentialité est en cours de révision et n'a pas encore été validée par un professionnel du droit.</div>
 
   <h1>Politique de confidentialité</h1>
-  <div class="subtitle">BreachSix: Tactical Squad — dernière mise à jour : 26 septembre 2026</div>
+  <div class="subtitle">BreachSix: Tactical Squad — BreachSix Games</div>
 
-  <p>BreachSix Games (« nous ») publie l'application <strong>BreachSix: Tactical Squad</strong>, disponible sur Google Play, en tant que mini-application Telegram, et sur le site <a href="https://breachsixgames.com/">breachsixgames.com</a>. Cette politique explique quelles données sont traitées lorsque vous utilisez le jeu, sur l'une ou l'autre de ces plateformes.</p>
+  <h2>Aucun serveur, aucun compte</h2>
+  <p>BreachSix: Tactical Squad ne dispose d'aucun serveur, base de données ou compte utilisateur. Le jeu fonctionne entièrement sur votre appareil.</p>
 
-  <h2>1. Ce que nous ne collectons pas</h2>
-  <p>BreachSix Games ne fait fonctionner aucun serveur de jeu, aucun système de compte, et ne demande ni nom, ni courriel, ni identifiant pour jouer. Nous ne recevons donc directement aucune de ces informations.</p>
-
-  <h2>2. Données conservées sur votre appareil</h2>
-  <p>Votre progression est conservée uniquement en local, jamais transmise à nos serveurs (nous n'en avons pas) :</p>
+  <h2>Données stockées localement</h2>
+  <p>Le jeu enregistre certaines informations directement sur votre appareil (jamais transmises à nous ni à un tiers, sauf tel que décrit dans la section publicité ci-dessous) :</p>
   <ul>
-    <li>meilleurs scores par mission ;</li>
-    <li>skins d'armes et couteaux débloqués ;</li>
-    <li>composition de vos deux escouades ;</li>
-    <li>préférences d'accessibilité (mode daltonien, texte agrandi) et de langue.</li>
+    <li>Meilleurs scores par niveau</li>
+    <li>Skins d'armes débloqués</li>
+    <li>Composition de vos escouades</li>
+    <li>Préférences de jeu (langue, son, musique)</li>
   </ul>
-  <p>Sur Android et sur le web, ces données sont conservées via le stockage local du navigateur (<code>localStorage</code>). Dans la version Telegram Mini App, les mêmes données sont également mises en miroir dans le stockage persistant propre à Telegram (<code>DeviceStorage</code>), géré par Telegram selon sa propre politique de confidentialité. Désinstaller l'application, vider les données du navigateur, ou quitter la conversation avec le bot Telegram efface ces données.</p>
+  <p>Ces données sont stockées via le stockage local de votre navigateur (<code>localStorage</code>). Si vous jouez dans Telegram, elles sont aussi mirées vers <code>DeviceStorage</code>, le stockage persistant propre à Telegram, pour éviter les pertes de progression liées au fonctionnement des mini-applications Telegram.</p>
+  <p>Désinstaller l'application ou effacer les données de votre navigateur supprime définitivement ces informations. Il n'existe actuellement aucune sauvegarde infonuagique ni synchronisation multi-appareil.</p>
 
-  <h2>3. Publicité et fournisseurs tiers</h2>
-  <p>Le jeu propose une pub optionnelle et récompensée : la regarder débloque un skin d'arme cosmétique, mais rien n'est jamais bloqué derrière une pub — aucune mission, aucun niveau, aucune fonctionnalité de jeu n'exige de regarder une publicité. Pour afficher ces publicités, nous faisons appel aux réseaux suivants, qui peuvent chacun collecter des données techniques (identifiant publicitaire de votre appareil, adresse IP, informations générales sur l'appareil et la localisation approximative) selon leur propre politique :</p>
+  <h2>Publicité et analytique</h2>
+  <p>Pour financer son développement, le jeu affiche des publicités et utilise des outils d'analyse fournis par les partenaires suivants. Chacun applique sa propre politique de confidentialité :</p>
   <table>
-    <tr><th>Fournisseur</th><th>Où</th><th>Politique de confidentialité</th></tr>
-    <tr><td>Google AdMob</td><td>Application Android</td><td><a href="https://policies.google.com/privacy">policies.google.com/privacy</a></td></tr>
-    <tr><td>Google AdSense</td><td>Site web breachsixgames.com</td><td><a href="https://policies.google.com/privacy">policies.google.com/privacy</a></td></tr>
-    <tr><td>Monetag</td><td>Telegram Mini App</td><td><a href="https://monetag.com/privacy-policy/">monetag.com/privacy-policy</a></td></tr>
-    <tr><td>AdsGram</td><td>Telegram Mini App</td><td><a href="https://adsgram.ai/privacy">adsgram.ai/privacy</a></td></tr>
-    <tr><td>OnClicka</td><td>Telegram Mini App (actuellement désactivé)</td><td><a href="https://onclicka.com/privacy-policy">onclicka.com/privacy-policy</a></td></tr>
+    <tr><th>Fournisseur</th><th>Usage</th><th>Politique</th></tr>
+    <tr><td>Google AdMob</td><td>Publicités récompensées (application Android)</td><td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></td></tr>
+    <tr><td>Google AdSense</td><td>Publicités (version web)</td><td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></td></tr>
+    <tr><td>Monetag</td><td>Publicités récompensées (Telegram)</td><td><a href="https://monetag.com/privacy-policy/" target="_blank" rel="noopener">monetag.com/privacy-policy</a></td></tr>
+    <tr><td>AdsGram</td><td>Publicités récompensées (Telegram)</td><td><a href="https://adsgram.ai/privacy" target="_blank" rel="noopener">adsgram.ai/privacy</a></td></tr>
+    <tr><td>OnClicka</td><td>Publicités (Telegram, actuellement désactivé)</td><td><a href="https://onclicka.com/privacy-policy" target="_blank" rel="noopener">onclicka.com/privacy-policy</a></td></tr>
   </table>
-  <p>Nous ne recevons de ces fournisseurs aucune information nous permettant de vous identifier personnellement — uniquement une confirmation technique qu'une publicité a été affichée, utilisée pour débloquer la récompense cosmétique correspondante.</p>
+  <p>Ces fournisseurs peuvent utiliser des identifiants publicitaires ou des témoins (cookies) pour mesurer les performances publicitaires ou personnaliser les annonces, conformément à leurs propres politiques.</p>
 
-  <h2>4. Cookies et technologies de suivi</h2>
-  <p>Nous distinguons deux catégories, selon l'esprit de l'article 8.1 de la Loi 25 (voir section 10) :</p>
-  <table>
-    <tr><th>Catégorie</th><th>Exemples</th><th>Consentement</th></tr>
-    <tr><td><strong>Essentiels</strong> (nécessaires au fonctionnement du jeu)</td><td>stockage local (<code>localStorage</code>) de vos scores, skins, escouades et préférences ; miroir <code>DeviceStorage</code> sur Telegram</td><td>Aucun consentement requis — sans eux, votre progression ne peut pas être conservée. Rien n'est envoyé à un tiers.</td></tr>
-    <tr><td><strong>Non essentiels</strong> (publicitaires / suivi)</td><td>cookies déposés par Google AdSense sur le site web breachsixgames.com ; identifiants publicitaires lus par AdMob (app Android), Monetag et AdsGram (Telegram)</td><td>Sur le site web : bannière de consentement affichée au premier chargement — AdSense ne se charge qu'après avoir cliqué « Accepter ». Sur Telegram : Monetag et AdsGram ne se chargent même pas pour un visiteur qui n'ouvre pas le jeu depuis Telegram (détection technique à l'URL avant tout chargement de script), et ne s'activent qu'au moment où vous appuyez vous-même sur « Regarder une pub optionnelle ».</td></tr>
-  </table>
-  <p>Vous pouvez changer d'avis sur les cookies du site web à tout moment en vidant les données de site pour breachsixgames.com dans votre navigateur (la bannière réapparaîtra), ou en nous écrivant à l'adresse de contact ci-dessous.</p>
+  <h2>Achats intégrés</h2>
+  <p>Le jeu ne propose actuellement aucun achat intégré ni transaction financière.</p>
 
-  <h2>5. Public visé</h2>
-  <p>BreachSix: Tactical Squad n'est pas conçu spécifiquement pour les enfants et ne cible pas volontairement un public de moins de 13 ans. Nous ne collectons pas sciemment de données auprès d'enfants.</p>
+  <h2>Enfants</h2>
+  <p>Le jeu ne collecte sciemment aucune donnée personnelle identifiable auprès de qui que ce soit, y compris des enfants.</p>
 
-  <h2>6. Vos choix</h2>
-  <ul>
-    <li>Vous pouvez limiter la publicité personnalisée dans les paramètres de votre appareil (réinitialiser ou limiter l'identifiant publicitaire, sur Android : Paramètres → Confidentialité → Annonces).</li>
-    <li>Vous pouvez effacer vos données de jeu à tout moment en désinstallant l'application ou en vidant les données de site pour breachsixgames.com dans votre navigateur.</li>
-    <li>Vous pouvez retirer votre consentement aux cookies publicitaires du site web à tout moment (voir section 4).</li>
-  </ul>
+  <h2>Vos droits</h2>
+  <p>Puisque toutes les données de jeu restent sur votre appareil, vous pouvez les effacer à tout moment en désinstallant l'application ou en effaçant les données du site dans votre navigateur. Pour toute question concernant cette politique, écrivez-nous à <a href="mailto:breachstudios.dev@gmail.com">breachstudios.dev@gmail.com</a>.</p>
 
-  <h2>7. Conservation des données</h2>
-  <p>N'exploitant aucun serveur, nous ne conservons vos données nulle part de notre côté. Elles existent uniquement sur votre appareil, aussi longtemps que vous ne les effacez pas vous-même.</p>
+  <h2>Juridiction</h2>
+  <p>Cette politique est régie par les lois applicables au Québec, Canada (à confirmer).</p>
 
-  <h2>8. Modifications de cette politique</h2>
-  <p>Cette politique peut être mise à jour si le jeu change (nouveau réseau publicitaire, nouvelle plateforme, ajout d'un système de compte, etc.). La date de dernière mise à jour en haut de page reflète la version en vigueur.</p>
+  <h2>Modifications</h2>
+  <p>Cette politique peut être mise à jour à mesure que le jeu évolue (nouveaux partenaires publicitaires, nouvelles fonctionnalités). Consultez cette page périodiquement.</p>
 
-  <h2>9. Nous joindre</h2>
-  <div class="contact-box">
-    BreachSix Games<br>
-    Courriel : <a href="mailto:breachstudios.dev@gmail.com">breachstudios.dev@gmail.com</a><br>
-    Telegram : <a href="https://t.me/BreachSixGameBot">@BreachSixGameBot</a>
-  </div>
-  <p style="margin-top:8px;">Aux fins de la Loi 25, la personne responsable de la protection des renseignements personnels au sein de BreachSix Games est joignable à cette même adresse courriel. <em>(À défaut d'une désignation formelle distincte, cette fonction est assumée par défaut par la personne ayant la plus haute autorité au sein de l'entreprise, conformément à la loi.)</em></p>
+  <div class="updated">Dernière mise à jour : 27 septembre 2026 — BreachSix Games</div>
 
-  <h2>10. Loi 25 (Québec) et vos droits</h2>
-  <p>BreachSix Games est basée au Québec et applique la <em>Loi modernisant des dispositions législatives en matière de protection des renseignements personnels</em> (« Loi 25 ») aux renseignements personnels que nous traitons, dans la mesure où le modèle du jeu (sans serveur, sans compte) nous amène à en traiter.</p>
-  <ul>
-    <li><strong>Consentement aux technologies de suivi non essentielles</strong> — conformément à l'esprit de l'article 8.1, les cookies publicitaires du site web (AdSense) ne se chargent qu'après votre consentement explicite via la bannière de cookies ; ils ne sont jamais activés par défaut (voir section 4). Les autres réseaux publicitaires (AdMob, Monetag, AdsGram) ne s'activent que lorsque vous choisissez vous-même de regarder une publicité récompensée.</li>
-    <li><strong>Droit d'accès et de rectification</strong> — dans la mesure où une donnée vous concernant existe de notre côté (ce qui, pour l'essentiel, se limite aux journaux techniques anonymisés des réseaux publicitaires), vous pouvez nous demander d'y accéder ou de la faire corriger en écrivant à l'adresse de contact ci-dessus.</li>
-    <li><strong>Droit de retrait du consentement</strong> — vous pouvez retirer votre consentement aux cookies publicitaires en tout temps (section 4), sans que cela affecte votre capacité à jouer.</li>
-    <li><strong>Transferts hors Québec</strong> — les fournisseurs tiers énumérés à la section 3 (Google, Monetag, AdsGram, OnClicka) traitent les données techniques qu'ils collectent sur des serveurs pouvant être situés hors du Québec, notamment aux États-Unis. Ce traitement est encadré par leurs propres politiques de confidentialité et mesures de protection ; nous n'effectuons nous-mêmes aucun transfert direct de données, n'en détenant pas.</li>
-    <li><strong>Incidents de confidentialité</strong> — si un incident mettant en cause des renseignements personnels sous notre contrôle survenait et présentait un risque sérieux de préjudice, nous en informerions les personnes concernées et, le cas échéant, la Commission d'accès à l'information du Québec, conformément à nos obligations légales.</li>
-    <li><strong>Droit de porter plainte</strong> — vous pouvez en tout temps déposer une plainte auprès de la <strong>Commission d'accès à l'information du Québec (CAI)</strong>, l'organisme responsable de l'application de la Loi 25, via <a href="https://www.cai.gouv.qc.ca/">cai.gouv.qc.ca</a>.</li>
-  </ul>
-
-  <h2>11. Droit applicable</h2>
-  <p>Cette politique est régie par les lois de la province de Québec et les lois applicables du Canada. <em>(Juridiction proposée — à confirmer lors de la révision juridique.)</em></p>
-
-  <footer>BreachSix Games — document de travail, version du 26 septembre 2026.</footer>
-</div>
 </body>
 </html>
