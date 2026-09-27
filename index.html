@@ -1843,10 +1843,10 @@ function bootGame() {
     return audioCtx;
   }
   function loadAudioBuffer(key, src) {
-    fetch(src)
+    return fetch(src)
       .then(res => res.arrayBuffer())
       .then(arr => getAudioCtx().decodeAudioData(arr))
-      .then(buf => { AUDIO_BUFFERS[key] = buf; })
+      .then(buf => { AUDIO_BUFFERS[key] = buf; return buf; })
       .catch(() => {});
   }
   [
@@ -1861,7 +1861,6 @@ function bootGame() {
     ['class-Heavy', CLASS_SOUND_SRC.Heavy],
     ['class-Light', CLASS_SOUND_SRC.Light],
     ['night', NIGHT_SOUND_SRC],
-    ['music-menu', MUSIC_MENU_SRC],
   ].forEach(([key, src]) => loadAudioBuffer(key, src));
 
   // --- Musique de fond en boucle (menus / briefing) ---
@@ -1872,17 +1871,23 @@ function bootGame() {
   // qu'un arrêt net, pour rester discret.
   let musicSource = null;
   let musicGain = null;
-  let musicStartRetries = 0;
+  // Corrige un bug signalé le 27 sept. 2026 : sur le site web (pas sur
+  // Telegram), aucune musique ne démarrait au tout premier chargement de la
+  // page — il fallait jouer une mission puis revenir au menu pour l'entendre.
+  // Cause : le fichier music-menu.mp3 (~1 Mo) est en concurrence, lors de ce
+  // tout premier chargement, avec le téléchargement des ~80 fichiers mis en
+  // cache par le service worker — son décodage pouvait donc prendre plus de
+  // temps qu'un délai fixe. L'ancienne version abandonnait silencieusement
+  // après 15 tentatives (4.5s). Remplacé par un déclenchement garanti, sans
+  // limite de temps : dès que le fichier est décodé (que ça prenne 1s ou
+  // 20s), la musique démarre automatiquement si l'écran affiché en a
+  // toujours besoin — plus aucune fenêtre où elle peut être manquée.
+  const musicMenuReady = loadAudioBuffer('music-menu', MUSIC_MENU_SRC);
+  musicMenuReady.then(() => { if (menuMusicDesired) startMenuMusic(); });
   function startMenuMusic() {
     if (musicSource) return; // déjà en cours
     const buf = AUDIO_BUFFERS['music-menu'];
-    if (!buf) {
-      // Pas encore décodée (chargement en cours) : quelques tentatives
-      // espacées, puis on abandonne silencieusement (best-effort).
-      if (musicStartRetries++ < 15) setTimeout(startMenuMusic, 300);
-      return;
-    }
-    musicStartRetries = 0;
+    if (!buf) return; // pas encore décodée — musicMenuReady relancera automatiquement
     try {
       const ctx = getAudioCtx();
       musicGain = ctx.createGain();
