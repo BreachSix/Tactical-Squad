@@ -531,9 +531,7 @@
           <circle class="enemy-helmet" cx="175" cy="79" r="4" fill="var(--enemy-dark)"/>
           <rect class="enemy-weapon" x="173.7" y="69" width="2.6" height="7" fill="var(--enemy-dark)"/>
           <g class="sniper-mark" style="display:none;">
-            <circle cx="175" cy="66" r="4" fill="none" stroke="var(--danger)" stroke-width="1.3"/>
-            <line x1="175" y1="61" x2="175" y2="71" stroke="var(--danger)" stroke-width="1"/>
-            <line x1="170" y1="66" x2="180" y2="66" stroke="var(--danger)" stroke-width="1"/>
+            <circle cx="175" cy="85" r="7.5" fill="none" stroke="var(--danger)" stroke-width="1.6"/>
           </g>
         </g>
 
@@ -553,9 +551,7 @@
           <circle class="enemy-helmet" cx="230" cy="144" r="4" fill="var(--enemy-dark)"/>
           <rect class="enemy-weapon" x="228.7" y="134" width="2.6" height="7" fill="var(--enemy-dark)"/>
           <g class="sniper-mark" style="display:none;">
-            <circle cx="230" cy="131" r="4" fill="none" stroke="var(--danger)" stroke-width="1.3"/>
-            <line x1="230" y1="126" x2="230" y2="136" stroke="var(--danger)" stroke-width="1"/>
-            <line x1="225" y1="131" x2="235" y2="131" stroke="var(--danger)" stroke-width="1"/>
+            <circle cx="230" cy="150" r="7.5" fill="none" stroke="var(--danger)" stroke-width="1.6"/>
           </g>
         </g>
 
@@ -565,9 +561,7 @@
           <circle class="enemy-helmet" cx="150" cy="229" r="4" fill="var(--enemy-dark)"/>
           <rect class="enemy-weapon" x="148.7" y="219" width="2.6" height="7" fill="var(--enemy-dark)"/>
           <g class="sniper-mark" style="display:none;">
-            <circle cx="150" cy="216" r="4" fill="none" stroke="var(--danger)" stroke-width="1.3"/>
-            <line x1="150" y1="211" x2="150" y2="221" stroke="var(--danger)" stroke-width="1"/>
-            <line x1="145" y1="216" x2="155" y2="216" stroke="var(--danger)" stroke-width="1"/>
+            <circle cx="150" cy="235" r="7.5" fill="none" stroke="var(--danger)" stroke-width="1.6"/>
           </g>
         </g>
         <g id="t5-g" style="display:none;">
@@ -575,9 +569,7 @@
           <circle class="enemy-helmet" cx="70" cy="144" r="4" fill="var(--enemy-dark)"/>
           <rect class="enemy-weapon" x="68.7" y="134" width="2.6" height="7" fill="var(--enemy-dark)"/>
           <g class="sniper-mark" style="display:none;">
-            <circle cx="70" cy="131" r="4" fill="none" stroke="var(--danger)" stroke-width="1.3"/>
-            <line x1="70" y1="126" x2="70" y2="136" stroke="var(--danger)" stroke-width="1"/>
-            <line x1="65" y1="131" x2="75" y2="131" stroke="var(--danger)" stroke-width="1"/>
+            <circle cx="70" cy="150" r="7.5" fill="none" stroke="var(--danger)" stroke-width="1.6"/>
           </g>
         </g>
         <g id="t6-g" style="display:none;">
@@ -585,9 +577,7 @@
           <circle class="enemy-helmet" cx="75" cy="209" r="4" fill="var(--enemy-dark)"/>
           <rect class="enemy-weapon" x="73.7" y="199" width="2.6" height="7" fill="var(--enemy-dark)"/>
           <g class="sniper-mark" style="display:none;">
-            <circle cx="75" cy="196" r="4" fill="none" stroke="var(--danger)" stroke-width="1.3"/>
-            <line x1="75" y1="191" x2="75" y2="201" stroke="var(--danger)" stroke-width="1"/>
-            <line x1="70" y1="196" x2="80" y2="196" stroke="var(--danger)" stroke-width="1"/>
+            <circle cx="75" cy="215" r="7.5" fill="none" stroke="var(--danger)" stroke-width="1.6"/>
           </g>
         </g>
 
@@ -1925,25 +1915,51 @@ function bootGame() {
 
   // Même éclat, mais positionné en coordonnées absolues de la pièce plutôt
   // que relatif à un opérateur — utilisé pour la riposte ennemie.
-  function spawnEnemyMuzzleFlash(svg, x, y) {
+  //
+  // Agrandi et allongé le 27 sept. 2026 : le joueur a signalé ne jamais
+  // percevoir de riposte ennemie ("des exécutions sommaires"). La mécanique
+  // existait déjà et se déclenchait bien (voir plus bas, après
+  // earliestEngageEnd), mais l'éclat d'origine (halo r=9, 220ms) passait
+  // quasi inaperçu, surtout sur les pièces à un seul garde faible qui se
+  // résolvent en 1-2 secondes. On agrandit l'éclat, on l'allonge (220ms →
+  // 420ms) et on ajoute un anneau rouge pulsé directement sur le garde qui
+  // tire, pour que la riposte soit indiscutablement visible même en
+  // visionnage rapide.
+  function spawnEnemyMuzzleFlash(svg, x, y, threatId) {
     const ns = 'http://www.w3.org/2000/svg';
     const g = document.createElementNS(ns, 'g');
     g.setAttribute('transform', 'translate(' + x + ',' + y + ')');
     g.style.pointerEvents = 'none';
     const halo = document.createElementNS(ns, 'circle');
-    halo.setAttribute('r', '9'); halo.setAttribute('fill', '#ff8c1a'); halo.setAttribute('opacity', '0.65');
+    halo.setAttribute('r', '13'); halo.setAttribute('fill', '#ff8c1a'); halo.setAttribute('opacity', '0.7');
     const star = document.createElementNS(ns, 'polygon');
     const pts = [];
     for (let k = 0; k < 8; k++) {
       const ang = k * Math.PI / 4;
-      const rad = k % 2 === 0 ? 7.2 : 2.9;
+      const rad = k % 2 === 0 ? 10.5 : 4.2;
       pts.push((Math.cos(ang) * rad).toFixed(2) + ',' + (Math.sin(ang) * rad).toFixed(2));
     }
     star.setAttribute('points', pts.join(' '));
     star.setAttribute('fill', '#ffe066');
     g.appendChild(halo); g.appendChild(star);
     svg.appendChild(g);
-    setTimeout(() => g.remove(), 220);
+    setTimeout(() => g.remove(), 420);
+
+    // Pulsation rouge sur le corps du garde qui tire, synchronisée avec
+    // l'éclat — rend la riposte lisible même si l'éclat lui-même (positionné
+    // au bout de l'arme, plus haut) sort du champ visuel du joueur.
+    if (threatId) {
+      const bodyEl = document.getElementById(threatId.toLowerCase() + '-g');
+      const body = bodyEl && bodyEl.querySelector('.enemy-body');
+      if (body) {
+        const prevFill = body.getAttribute('fill');
+        body.style.transition = 'none';
+        body.setAttribute('fill', 'var(--danger)');
+        void body.getBBox();
+        body.style.transition = 'fill 380ms ease-out';
+        setTimeout(() => body.setAttribute('fill', prevFill), 40);
+      }
+    }
   }
 
   function playClassSound(cls) {
@@ -4152,13 +4168,12 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
   function repositionSniperMark(g, x, y) {
     const mark = g.querySelector('.sniper-mark');
     if (!mark) return;
-    const cy = y - 19;
-    mark.querySelector('circle').setAttribute('cx', x); mark.querySelector('circle').setAttribute('cy', cy);
-    const lines = mark.querySelectorAll('line');
-    lines[0].setAttribute('x1', x); lines[0].setAttribute('x2', x);
-    lines[0].setAttribute('y1', cy - 5); lines[0].setAttribute('y2', cy + 5);
-    lines[1].setAttribute('y1', cy); lines[1].setAttribute('y2', cy);
-    lines[1].setAttribute('x1', x - 5); lines[1].setAttribute('x2', x + 5);
+    // L'anneau est concentrique au corps du garde (même cx/cy), exactement
+    // comme dans la légende — corrige l'incohérence signalée le 27 sept.
+    // 2026 : l'ancien viseur (mire flottante au-dessus du casque) ne
+    // reproduisait pas visuellement l'icône "corps + anneau rouge" promise
+    // par la légende.
+    mark.querySelector('circle').setAttribute('cx', x); mark.querySelector('circle').setAttribute('cy', y);
   }
 
   // Repositionne un garde "simple" (même structure pour T1, T3-T6) — évite
@@ -5242,13 +5257,13 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     if (!isBombRoom && assignedList.length && earliestEngageEnd < Infinity) {
       setTimeout(() => {
         [
-          [t1Cleared, threats.T1.x, threats.T1.y - 16, 'class-Assault'],
-          [hasT2 && t2Cleared, threats.T2.x, threats.T2.y - 28, 'class-Heavy'],
-          [hasT3 && t3Cleared, threats.T3.x, threats.T3.y - 16, 'class-Assault'],
-          [hasT4 && t4Cleared, threats.T4.x, threats.T4.y - 16, 'class-Assault'],
-          [hasT5 && t5Cleared, threats.T5.x, threats.T5.y - 16, 'class-Assault'],
-          [hasT6 && t6Cleared, threats.T6.x, threats.T6.y - 16, 'class-Assault'],
-        ].forEach(([active, fx, fy, soundKey], threatIdx) => {
+          [t1Cleared, threats.T1.x, threats.T1.y - 16, 'class-Assault', 'T1'],
+          [hasT2 && t2Cleared, threats.T2.x, threats.T2.y - 28, 'class-Heavy', 'T2'],
+          [hasT3 && t3Cleared, threats.T3.x, threats.T3.y - 16, 'class-Assault', 'T3'],
+          [hasT4 && t4Cleared, threats.T4.x, threats.T4.y - 16, 'class-Assault', 'T4'],
+          [hasT5 && t5Cleared, threats.T5.x, threats.T5.y - 16, 'class-Assault', 'T5'],
+          [hasT6 && t6Cleared, threats.T6.x, threats.T6.y - 16, 'class-Assault', 'T6'],
+        ].forEach(([active, fx, fy, soundKey, threatId], threatIdx) => {
           if (!active) return;
           // Chaque garde ouvre le feu avec un léger décalage plutôt que tous
           // en même temps — sur plusieurs gardes, ça se lit comme un vrai
@@ -5257,7 +5272,7 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
           const threatDelay = threatIdx * 260;
           for (let shot = 0; shot < 3; shot++) {
             setTimeout(() => {
-              spawnEnemyMuzzleFlash(svg, fx, fy);
+              spawnEnemyMuzzleFlash(svg, fx, fy, threatId);
               // La nuit, les gardes sont armés du même silencieux que
               // l'escouade — son étouffé au lieu d'un silence total, pour
               // rester cohérent avec le tir des opérateurs. Le garde blindé
@@ -5283,7 +5298,7 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     // 3 tirs chacun) et les opérateurs ont maintenant une seconde rafale —
     // la fin de mission doit attendre que tout ça ait eu le temps de se jouer.
     const retaliatingCount = [t1Cleared, hasT2 && t2Cleared, hasT3 && t3Cleared, hasT4 && t4Cleared, hasT5 && t5Cleared, hasT6 && t6Cleared].filter(Boolean).length;
-    const retaliationSpan = retaliatingCount > 0 ? (retaliatingCount - 1) * 260 + 2 * 90 + 220 : 0;
+    const retaliationSpan = retaliatingCount > 0 ? (retaliatingCount - 1) * 260 + 2 * 90 + 420 : 0;
     const maxDelay = (isBombRoom && !bombDefused)
       ? bombExplodeAt + 900
       : Math.max(
