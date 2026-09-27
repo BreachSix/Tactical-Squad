@@ -3647,6 +3647,20 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     document.getElementById('t5-g').style.opacity = '';
     document.getElementById('t6-g').style.opacity = '';
     document.getElementById('bomb-g').style.opacity = '';
+    // Corrige un bug de fond trouvé le 27 sept. 2026 : markThreatDead() pose
+    // fill="var(--danger)" en ATTRIBUT (pas en style) sur le corps d'un
+    // garde standard (T1/T3-T6) une fois neutralisé — et comme ces groupes
+    // SVG sont réutilisés d'une pièce à l'autre plutôt que recréés, ce rouge
+    // restait collé pour toujours après la toute première neutralisation de
+    // ce "slot", dans TOUTES les pièces suivantes, quel que soit le vrai
+    // type du garde. C'est ce qui rendait le viseur du tireur d'élite
+    // invisible (anneau rouge sur corps déjà rouge) et donnait l'impression
+    // que tous les gardes étaient identiques/toujours rouges. On restaure
+    // explicitement la couleur de base ici, à chaque nouvelle pièce.
+    ['t1-g', 't3-g', 't4-g', 't5-g', 't6-g'].forEach(id => {
+      const body = document.getElementById(id).querySelector('.enemy-body');
+      if (body) body.setAttribute('fill', 'var(--enemy)');
+    });
     const t2gReset = document.getElementById('t2-g');
     ['enemy-body', 'enemy-helmet', 'enemy-weapon'].forEach(cls => {
       const el = t2gReset.querySelector('.' + cls);
