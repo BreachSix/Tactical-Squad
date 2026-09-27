@@ -68,7 +68,8 @@
   }
   header h1 span { color: var(--amber); }
   header .mission-tag {
-    font-size: 0.66rem; color: var(--text-dim); font-family: var(--font-body);
+    font-size: 0.66rem; color: var(--amber); font-family: var(--font-head);
+    letter-spacing: 0.02em; font-weight: 600;
   }
   .mission-tag { font-size: 0.66rem; color: var(--text-dim); margin-bottom: 6px; flex-shrink: 0; }
   .compose-btn {
@@ -4864,13 +4865,40 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
   goBtn.addEventListener('click', runAssault);
   // Certains navigateurs mobiles suspendent le contexte audio tant qu'aucun
   // geste utilisateur n'a eu lieu — on s'assure qu'il tourne avant l'assaut.
-  document.addEventListener('pointerdown', () => {
+  // Corrige un bug signalé le 27 sept. 2026 : sur le site web, la musique de
+  // menu ne démarrait jamais tant que le joueur n'avait pas traversé une
+  // mission/composition complète, même après 20-25s d'attente pure (donc
+  // pas un problème de délai de chargement — voir tentative précédente en
+  // v97, insuffisante). Cause probable : un seul écouteur 'pointerdown' en
+  // { once: true } — certains navigateurs mobiles (notamment Safari/iOS)
+  // n'acceptent PAS 'pointerdown'/'touchstart' comme geste valide pour
+  // débloquer l'audio, seulement l'événement qui COMPLÈTE le tapotement
+  // ('touchend'/'click'/'mouseup'). Un seul clic sur une carte de niveau ou
+  // le bouton "Composer" aurait donc consommé le { once: true } sans jamais
+  // réussir à relancer le contexte, expliquant qu'il fallait aller beaucoup
+  // plus loin (plusieurs interactions) avant qu'un geste du bon type se
+  // produise. Remplacé par plusieurs types de gestes écoutés en parallèle,
+  // qui ne s'auto-retirent qu'une fois le déblocage réellement confirmé.
+  let audioUnlocked = false;
+  function unlockAudio() {
+    if (audioUnlocked) return;
     const ctx = getAudioCtx();
-    if (ctx.state === 'suspended') ctx.resume();
-    // Idempotent (voir startMenuMusic) : couvre le cas où le contexte était
-    // encore suspendu au moment de l'affichage initial du menu.
-    startMenuMusic();
-  }, { once: true });
+    const onUnlocked = () => {
+      audioUnlocked = true;
+      startMenuMusic();
+      ['pointerdown', 'touchend', 'mousedown', 'keydown', 'click'].forEach(evt =>
+        document.removeEventListener(evt, unlockAudio)
+      );
+    };
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(onUnlocked).catch(() => {});
+    } else {
+      onUnlocked();
+    }
+  }
+  ['pointerdown', 'touchend', 'mousedown', 'keydown', 'click'].forEach(evt =>
+    document.addEventListener(evt, unlockAudio, { passive: true })
+  );
 
   function runAssault() {
     if (resolved) return;
