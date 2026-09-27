@@ -4491,17 +4491,20 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     try { adsgramController = window.Adsgram.init({ blockId: '50046' }); } catch (e) {}
   }
 
-  // OnClicka (onclicka.com) — RÉACTIVÉ TEMPORAIREMENT le 27 sept. 2026,
-  // UNIQUEMENT pour reproduire et filmer le bug de plantage à la demande de
-  // leur support (voir commentaire ci-dessous pour le détail du bug).
-  // Repasser à `true` dès la preuve vidéo envoyée — ne pas laisser les
-  // joueurs exposés au bug plus longtemps que nécessaire.
-  //
-  // Bug d'origine (signalé le 26 sept. 2026) : fermer leur pub plein écran
-  // (bouton "Go!"/X, format "TradingWars Play2Earn" observé) fait planter
-  // tout le WebView Telegram (écran noir, spinner natif Telegram bloqué
-  // indéfiniment, obligeant le joueur à fermer et rouvrir le Mini App).
-  const ONCLICKA_DISABLED = false;
+  // OnClicka (onclicka.com) — DÉSACTIVÉ (re-confirmé le 27 sept. 2026).
+  // Bug reproduit ET filmé en entier le 27 sept. 2026 (2e occurrence,
+  // preuve vidéo envoyée au support OnClicka) : la pub plein écran charge
+  // (ex. "TradingWars Play2Earn"), puis l'écran devient tout noir avec le
+  // spinner Telegram bloqué indéfiniment, et le Mini App finit par planter
+  // et se fermer complètement tout seul (retour forcé à la conversation
+  // Telegram) — le joueur doit rouvrir le Mini App manuellement, ce qui
+  // recharge la page et fait perdre sa position dans le menu.
+  // Semble intermittent : une 1ère série de pubs peut fonctionner sans
+  // problème, le plantage survenant plutôt lors d'essais répétés peu après.
+  // Réactiver en repassant ONCLICKA_DISABLED à false UNIQUEMENT à la
+  // demande explicite du joueur (ex. pour refournir une preuve à OnClicka),
+  // jamais en production tant que leur support n'a pas confirmé un correctif.
+  const ONCLICKA_DISABLED = true;
   let onclickaShow = null;
   if (!ONCLICKA_DISABLED && isTelegram && window.initCdTma) {
     window.initCdTma({ id: '6152597' })
