@@ -26,19 +26,40 @@ class TwaLauncherActivity : AppCompatActivity() {
     private var customTabsSession: CustomTabsSession? = null
     private var serviceConnection: CustomTabsServiceConnection? = null
     private var twaLaunched = false
+
+    // Le canal postMessage n'est demandé qu'une fois les DEUX conditions
+    // réunies : la navigation vers LAUNCH_URL est terminée, ET Chrome a
+    // confirmé (via Digital Asset Links) que cette appli a le droit de
+    // s'identifier comme POST_MESSAGE_ORIGIN — deux DAL distincts sont en
+    // jeu ici, jamais interchangeables : handle_all_urls autorise juste
+    // l'affichage plein écran (déjà en place), tandis que use_as_origin
+    // est celui qui autorise réellement le canal postMessage. Sans lui,
+    // Chrome refuse le canal en silence : onMessageChannelReady ne se
+    // déclenche jamais, sans la moindre erreur visible.
+    private var navigationFinished = false
+    private var originValidated = false
     private var postMessageChannelRequested = false
 
     private lateinit var adManager: RewardedAdManager
 
     private val customTabsCallback = object : CustomTabsCallback() {
         override fun onNavigationEvent(navigationEvent: Int, extras: Bundle?) {
-            // La doc officielle Chrome exige que requestPostMessageChannel()
-            // soit appelé APRES la fin de la navigation, jamais avant.
-            if (navigationEvent == NAVIGATION_FINISHED && !postMessageChannelRequested) {
-                postMessageChannelRequested = true
-                val requested = customTabsSession
-                    ?.requestPostMessageChannel(Uri.parse(POST_MESSAGE_ORIGIN))
-                Log.d(TAG, "requestPostMessageChannel après navigation: $requested")
+            if (navigationEvent == NAVIGATION_FINISHED) {
+                navigationFinished = true
+                maybeRequestPostMessageChannel()
+            }
+        }
+
+        override fun onRelationshipValidationResult(
+            relation: Int,
+            requestedOrigin: Uri,
+            result: Boolean,
+            extras: Bundle?
+        ) {
+            Log.d(TAG, "validateRelationship relation=$relation origin=$requestedOrigin résultat=$result")
+            if (relation == CustomTabsService.RELATION_USE_AS_ORIGIN) {
+                originValidated = result
+                maybeRequestPostMessageChannel()
             }
         }
 
@@ -51,6 +72,15 @@ class TwaLauncherActivity : AppCompatActivity() {
 
         override fun onPostMessage(message: String, extras: Bundle?) {
             handleIncomingMessage(message)
+        }
+    }
+
+    private fun maybeRequestPostMessageChannel() {
+        if (navigationFinished && originValidated && !postMessageChannelRequested) {
+            postMessageChannelRequested = true
+            val requested = customTabsSession
+                ?.requestPostMessageChannel(Uri.parse(POST_MESSAGE_ORIGIN))
+            Log.d(TAG, "requestPostMessageChannel (navigation finie + origine validée): $requested")
         }
     }
 
@@ -82,14 +112,21 @@ class TwaLauncherActivity : AppCompatActivity() {
                     return
                 }
                 customTabsSession = session
+                // DAL n°1 : autorise l'affichage plein écran de la TWA sur ce domaine.
                 session.validateRelationship(
                     CustomTabsService.RELATION_HANDLE_ALL_URLS,
                     Uri.parse(LAUNCH_URL),
                     null
                 )
-                // On lance la TWA dès que la session est prête : le canal
-                // postMessage sera demandé APRES la navigation (voir
-                // onNavigationEvent ci-dessus), pas avant.
+                // DAL n°2 (distinct du précédent) : autorise cette appli à
+                // s'identifier comme POST_MESSAGE_ORIGIN dans le canal
+                // postMessage — condition requise avant tout
+                // requestPostMessageChannel (voir maybeRequestPostMessageChannel).
+                session.validateRelationship(
+                    CustomTabsService.RELATION_USE_AS_ORIGIN,
+                    Uri.parse(POST_MESSAGE_ORIGIN),
+                    null
+                )
                 launchTwa()
             }
 
