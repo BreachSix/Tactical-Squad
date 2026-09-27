@@ -2097,22 +2097,28 @@ function bootGame() {
   // existait déjà et se déclenchait bien (voir plus bas, après
   // earliestEngageEnd), mais l'éclat d'origine (halo r=9, 220ms) passait
   // quasi inaperçu, surtout sur les pièces à un seul garde faible qui se
-  // résolvent en 1-2 secondes. On agrandit l'éclat, on l'allonge (220ms →
-  // 420ms) et on ajoute un anneau rouge pulsé directement sur le garde qui
-  // tire, pour que la riposte soit indiscutablement visible même en
-  // visionnage rapide.
+  // résolvent en 1-2 secondes. On allonge l'éclat (220ms → 420ms) et on
+  // ajoute un anneau rouge pulsé directement sur le garde qui tire, pour que
+  // la riposte soit indiscutablement visible même en visionnage rapide.
+  //
+  // Retour du joueur le 27 sept. 2026, une fois le vrai bug de déclenchement
+  // corrigé (voir plus bas) et la riposte enfin visible en jeu : l'éclat
+  // agrandi (halo r=13) était trop imposant comparé à l'éclat des opérateurs
+  // (halo r=5) — remis au même gabarit que spawnMuzzleFlash ci-dessus, tout
+  // en gardant la durée allongée et la pulsation rouge sur le garde, qui
+  // suffisent à elles seules à rendre la riposte lisible.
   function spawnEnemyMuzzleFlash(svg, x, y, threatId) {
     const ns = 'http://www.w3.org/2000/svg';
     const g = document.createElementNS(ns, 'g');
     g.setAttribute('transform', 'translate(' + x + ',' + y + ')');
     g.style.pointerEvents = 'none';
     const halo = document.createElementNS(ns, 'circle');
-    halo.setAttribute('r', '13'); halo.setAttribute('fill', '#ff8c1a'); halo.setAttribute('opacity', '0.7');
+    halo.setAttribute('r', '5'); halo.setAttribute('fill', '#ff8c1a'); halo.setAttribute('opacity', '0.55');
     const star = document.createElementNS(ns, 'polygon');
     const pts = [];
     for (let k = 0; k < 8; k++) {
       const ang = k * Math.PI / 4;
-      const rad = k % 2 === 0 ? 10.5 : 4.2;
+      const rad = k % 2 === 0 ? 4.2 : 1.7;
       pts.push((Math.cos(ang) * rad).toFixed(2) + ',' + (Math.sin(ang) * rad).toFixed(2));
     }
     star.setAttribute('points', pts.join(' '));
