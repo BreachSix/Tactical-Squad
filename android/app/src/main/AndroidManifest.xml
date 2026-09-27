@@ -35,5 +35,12 @@
             </intent-filter>
         </activity>
 
+        <!-- Requis par la doc officielle Chrome pour le canal postMessage
+             TWA (developer.chrome.com/docs/android/post-message-twa) —
+             absent jusqu'ici, cause probable du blocage silencieux. -->
+        <service
+            android:name="androidx.browser.customtabs.PostMessageService"
+            android:exported="true" />
+
     </application>
 </manifest>
