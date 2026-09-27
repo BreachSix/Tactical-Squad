@@ -1817,6 +1817,8 @@ function bootGame() {
     nightVision: './sound-night-vision.mp3',
     bombTick: './sound-bomb-tick.mp3',
     shadowBlade: './sound-shadow-blade.mp3',
+    unlock: './sound-unlock.mp3',
+    click: './sound-click.mp3',
   };
   // Musique d'ambiance de fond (menus / briefing), ajoutée le 27 sept. 2026
   // à la demande du joueur ("le jeu est très silencieux"). Deux tentatives
@@ -1853,6 +1855,8 @@ function bootGame() {
     ['sfx-nightvision', SFX.nightVision],
     ['sfx-bombtick', SFX.bombTick],
     ['sfx-shadowblade', SFX.shadowBlade],
+    ['sfx-unlock', SFX.unlock],
+    ['sfx-click', SFX.click],
     ['class-Assault', CLASS_SOUND_SRC.Assault],
     ['class-Heavy', CLASS_SOUND_SRC.Heavy],
     ['class-Light', CLASS_SOUND_SRC.Light],
@@ -4405,6 +4409,12 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     if (pendingBriefingLevel != null) enterMission(pendingBriefingLevel);
   });
 
+  // Vrai quand l'écran affiché est un de ceux où la musique de menu doit
+  // jouer (menu/briefing) — mémorisé séparément de musicSource pour pouvoir
+  // relancer la musique après un retour d'arrière-plan (voir visibilitychange
+  // plus bas), sans dépendre de l'état interne du player.
+  let menuMusicDesired = false;
+
   function showScreen(name) {
     document.getElementById('menu-screen').style.display = name === 'menu' ? 'flex' : 'none';
     document.getElementById('briefing-screen').style.display = name === 'briefing' ? 'flex' : 'none';
@@ -4412,12 +4422,28 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     // Musique de fond : joue en boucle dans les menus/briefing (planification),
     // s'estompe dès l'entrée en mission pour laisser la place au stinger et
     // aux effets sonores de l'assaut.
-    if (name === 'menu' || name === 'briefing') {
+    menuMusicDesired = (name === 'menu' || name === 'briefing');
+    if (menuMusicDesired) {
       startMenuMusic();
     } else {
       stopMenuMusic();
     }
   }
+
+  // Corrige un bug signalé le 27 sept. 2026 : la musique de menu continuait
+  // à jouer indéfiniment en arrière-plan (autre appli, écran d'accueil,
+  // verrouillage) tant que la page n'était pas rafraîchie manuellement — le
+  // Web Audio API, contrairement à une balise <audio>, n'est pas mis en
+  // pause automatiquement par le navigateur quand l'onglet/l'appli passe en
+  // arrière-plan. On l'arrête explicitement ici, et on la relance au retour
+  // au premier plan si l'écran affiché en a toujours besoin.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopMenuMusic();
+    } else if (menuMusicDesired) {
+      startMenuMusic();
+    }
+  });
 
   function enterMission(levelId) {
     currentLevel = levelId;
@@ -4556,6 +4582,13 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     document.getElementById('celebration-title').textContent = title;
     document.getElementById('celebration-sub').textContent = sub;
     document.getElementById('celebration-overlay').classList.add('show');
+    // Son de déblocage (ajouté le 27 sept. 2026, fourni par le joueur) : ce
+    // point d'entrée unique couvre à la fois le déblocage de skin d'arme et
+    // celui d'un palier de karambit (les deux popups automatiques passent
+    // par showCelebration) — mais pas les aperçus déclenchés manuellement
+    // (showSkinPreview / showKnifePreview), qui n'appellent jamais cette
+    // fonction.
+    playPreloaded('sfx-unlock', 1.0, 0.9);
   }
   document.getElementById('celebration-close-btn').addEventListener('click', () => {
     document.getElementById('celebration-overlay').classList.remove('show');
@@ -4741,6 +4774,7 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
 
   function onChipTap(op, isAssigned) {
     if (resolved) return;
+    playPreloaded('sfx-click', 1.0, 0.7);
     if (isAssigned) {
       // unassign from wherever it's currently placed
       for (const d in assignments) {
@@ -4761,6 +4795,7 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
 
   function onDoorTap(doorId) {
     if (resolved || composeMode) return;
+    playPreloaded('sfx-click', 1.0, 0.7);
     const current = assignments[doorId] || [];
     if (selectedOp) {
       const op = operators.find(o => o.id === selectedOp);
