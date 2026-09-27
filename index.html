@@ -475,6 +475,16 @@
         </div>
       </div>
 
+      <div class="skins-section">
+        <div class="skins-header">
+          <span class="squad-title" data-i18n="soundSettings" style="color:var(--amber);">Son</span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="compose-btn" id="music-toggle-btn" data-i18n="musicToggle" style="flex:1;">Musique</button>
+          <button class="compose-btn" id="sfx-toggle-btn" data-i18n="sfxToggle" style="flex:1;">Effets sonores</button>
+        </div>
+      </div>
+
       <div class="skins-section" style="text-align:center;">
         <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; padding-top:2px;">
           <a href="https://t.me/BreachSixGameBot" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-size:0.78rem; text-decoration:none; border:1px solid var(--wall); border-radius:6px; padding:8px 14px; background:var(--panel);"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M2 21L23 12 2 3v7l14 2-14 2z"/></svg> Telegram</a>
@@ -728,6 +738,9 @@ function bootGame() {
       accessibility: 'Accessibilité',
       colorblindMode: 'Mode daltonien',
       largeTextMode: 'Texte agrandi',
+      soundSettings: 'Son',
+      musicToggle: 'Musique',
+      sfxToggle: 'Effets sonores',
       weaponSkins: "Skins d'armes",
       compose: 'Composer',
       objectiveLabel: 'Objectif :',
@@ -832,6 +845,9 @@ function bootGame() {
       accessibility: 'Accessibility',
       colorblindMode: 'Colorblind mode',
       largeTextMode: 'Large text',
+      soundSettings: 'Sound',
+      musicToggle: 'Music',
+      sfxToggle: 'Sound effects',
       weaponSkins: 'Weapon skins',
       compose: 'Build squad',
       objectiveLabel: 'Objective:',
@@ -936,6 +952,9 @@ function bootGame() {
       accessibility: 'Accesibilidad',
       colorblindMode: 'Modo daltónico',
       largeTextMode: 'Texto grande',
+      soundSettings: 'Sonido',
+      musicToggle: 'Música',
+      sfxToggle: 'Efectos de sonido',
       weaponSkins: 'Skins de armas',
       compose: 'Formar escuadrón',
       objectiveLabel: 'Objetivo:',
@@ -1040,6 +1059,9 @@ function bootGame() {
       accessibility: 'Acessibilidade',
       colorblindMode: 'Modo daltônico',
       largeTextMode: 'Texto grande',
+      soundSettings: 'Som',
+      musicToggle: 'Música',
+      sfxToggle: 'Efeitos sonoros',
       weaponSkins: 'Skins de armas',
       compose: 'Montar esquadrão',
       objectiveLabel: 'Objetivo:',
@@ -1144,6 +1166,9 @@ function bootGame() {
       accessibility: 'Barrierefreiheit',
       colorblindMode: 'Farbenblind-Modus',
       largeTextMode: 'Große Schrift',
+      soundSettings: 'Ton',
+      musicToggle: 'Musik',
+      sfxToggle: 'Soundeffekte',
       weaponSkins: 'Waffen-Skins',
       compose: 'Trupp zusammenstellen',
       objectiveLabel: 'Ziel:',
@@ -1248,6 +1273,9 @@ function bootGame() {
       accessibility: 'Accessibilità',
       colorblindMode: 'Modalità daltonici',
       largeTextMode: 'Testo grande',
+      soundSettings: 'Audio',
+      musicToggle: 'Musica',
+      sfxToggle: 'Effetti sonori',
       weaponSkins: 'Skin delle armi',
       compose: 'Componi squadra',
       objectiveLabel: 'Obiettivo:',
@@ -1352,6 +1380,9 @@ function bootGame() {
       accessibility: 'Специальные возможности',
       colorblindMode: 'Режим для дальтоников',
       largeTextMode: 'Крупный текст',
+      soundSettings: 'Звук',
+      musicToggle: 'Музыка',
+      sfxToggle: 'Звуковые эффекты',
       weaponSkins: 'Скины оружия',
       compose: 'Сформировать отряд',
       objectiveLabel: 'Задача:',
@@ -1456,6 +1487,9 @@ function bootGame() {
       accessibility: 'アクセシビリティ',
       colorblindMode: 'カラーユニバーサルモード',
       largeTextMode: '文字を大きくする',
+      soundSettings: 'サウンド',
+      musicToggle: '音楽',
+      sfxToggle: '効果音',
       weaponSkins: '武器スキン',
       compose: 'スクワッド編成',
       objectiveLabel: '目標：',
@@ -1560,6 +1594,9 @@ function bootGame() {
       accessibility: '접근성',
       colorblindMode: '색맹 모드',
       largeTextMode: '큰 글씨',
+      soundSettings: '사운드',
+      musicToggle: '음악',
+      sfxToggle: '효과음',
       weaponSkins: '무기 스킨',
       compose: '분대 편성',
       objectiveLabel: '목표:',
@@ -1664,6 +1701,9 @@ function bootGame() {
       accessibility: '无障碍设置',
       colorblindMode: '色盲模式',
       largeTextMode: '大字体',
+      soundSettings: '声音',
+      musicToggle: '音乐',
+      sfxToggle: '音效',
       weaponSkins: '武器皮肤',
       compose: '编组小队',
       objectiveLabel: '目标：',
@@ -1902,6 +1942,7 @@ function bootGame() {
   musicMenuReady.then(() => { if (menuMusicDesired) startMenuMusic(); });
   function startMenuMusic() {
     if (musicSource) return; // déjà en cours
+    if (!musicEnabled) return; // interrupteur "Musique" du menu (option demandée le 27 sept. 2026)
     const buf = AUDIO_BUFFERS['music-menu'];
     if (!buf) return; // pas encore décodée — musicMenuReady relancera automatiquement
     try {
@@ -1933,6 +1974,7 @@ function bootGame() {
   }
 
   function playPreloaded(key, rate, gain) {
+    if (!sfxEnabled) return; // interrupteur "Effets sonores" du menu (option demandée le 27 sept. 2026)
     const buf = AUDIO_BUFFERS[key];
     if (!buf) return; // pas encore décodé (rare) : on n'échoue pas, on saute simplement
     try {
@@ -5770,6 +5812,38 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     applyAccessibility();
   });
   applyAccessibility();
+
+  // Options de son (ajoutées le 27 sept. 2026, à la demande du joueur, une
+  // fois plusieurs effets et la musique de fond en place). Contrairement à
+  // l'accessibilité (opt-in, off par défaut), le son est activé par défaut
+  // — loadBoolPref ne convient donc pas tel quel (son absence de valeur
+  // stockée doit signifier "activé", pas "désactivé").
+  function loadSoundPref(key) {
+    try { return localStorage.getItem(key) !== '0'; } catch (e) { return true; }
+  }
+  let musicEnabled = loadSoundPref('breachsix-music-enabled');
+  let sfxEnabled = loadSoundPref('breachsix-sfx-enabled');
+
+  function applySoundSettings() {
+    document.getElementById('music-toggle-btn').classList.toggle('active', musicEnabled);
+    document.getElementById('sfx-toggle-btn').classList.toggle('active', sfxEnabled);
+  }
+  document.getElementById('music-toggle-btn').addEventListener('click', () => {
+    musicEnabled = !musicEnabled;
+    saveBoolPref('breachsix-music-enabled', musicEnabled);
+    applySoundSettings();
+    if (musicEnabled) {
+      if (menuMusicDesired) startMenuMusic();
+    } else {
+      stopMenuMusic();
+    }
+  });
+  document.getElementById('sfx-toggle-btn').addEventListener('click', () => {
+    sfxEnabled = !sfxEnabled;
+    saveBoolPref('breachsix-sfx-enabled', sfxEnabled);
+    applySoundSettings();
+  });
+  applySoundSettings();
 
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => {
