@@ -1813,7 +1813,20 @@ function bootGame() {
 
   const SFX = {
     explosion: './sound-explosion.mp3',
+    stinger: './sound-mission-stinger.mp3',
+    nightVision: './sound-night-vision.mp3',
+    bombTick: './sound-bomb-tick.mp3',
+    shadowBlade: './sound-shadow-blade.mp3',
   };
+  // Musique d'ambiance de fond (menus / briefing), ajoutée le 27 sept. 2026
+  // à la demande du joueur ("le jeu est très silencieux"). Deux tentatives
+  // générées par Claude jugées insuffisantes (v1 quasi inaudible, v2 pas
+  // encore validée) ; remplacées le même jour par une piste "thriller
+  // sombre" libre de droits fournie par le joueur, déjà conçue pour boucler
+  // — volume modéré (gain ci-dessous) pour rester un fond discret plutôt
+  // qu'une mélodie qui prend toute la place.
+  const MUSIC_MENU_SRC = './music-menu.mp3';
+  const MUSIC_MENU_GAIN = 0.22;
 
   // Web Audio API : les fichiers sont décodés une seule fois en mémoire au
   // démarrage, puis chaque lecture démarre quasi instantanément (contrairement
@@ -1836,11 +1849,63 @@ function bootGame() {
   }
   [
     ['sfx-explosion', SFX.explosion],
+    ['sfx-stinger', SFX.stinger],
+    ['sfx-nightvision', SFX.nightVision],
+    ['sfx-bombtick', SFX.bombTick],
+    ['sfx-shadowblade', SFX.shadowBlade],
     ['class-Assault', CLASS_SOUND_SRC.Assault],
     ['class-Heavy', CLASS_SOUND_SRC.Heavy],
     ['class-Light', CLASS_SOUND_SRC.Light],
     ['night', NIGHT_SOUND_SRC],
+    ['music-menu', MUSIC_MENU_SRC],
   ].forEach(([key, src]) => loadAudioBuffer(key, src));
+
+  // --- Musique de fond en boucle (menus / briefing) ---
+  // AudioBufferSourceNode avec .loop = true : boucle sans coupure (le fichier
+  // source a été généré avec un raccord fondu tête/queue), contrairement à
+  // <audio loop> qui peut laisser un micro-silence audible à chaque tour sur
+  // certains navigateurs. Fondu enchaîné (gain) à l'entrée/sortie plutôt
+  // qu'un arrêt net, pour rester discret.
+  let musicSource = null;
+  let musicGain = null;
+  let musicStartRetries = 0;
+  function startMenuMusic() {
+    if (musicSource) return; // déjà en cours
+    const buf = AUDIO_BUFFERS['music-menu'];
+    if (!buf) {
+      // Pas encore décodée (chargement en cours) : quelques tentatives
+      // espacées, puis on abandonne silencieusement (best-effort).
+      if (musicStartRetries++ < 15) setTimeout(startMenuMusic, 300);
+      return;
+    }
+    musicStartRetries = 0;
+    try {
+      const ctx = getAudioCtx();
+      musicGain = ctx.createGain();
+      musicGain.gain.value = 0;
+      musicSource = ctx.createBufferSource();
+      musicSource.buffer = buf;
+      musicSource.loop = true;
+      musicSource.connect(musicGain);
+      musicGain.connect(ctx.destination);
+      musicSource.start(0);
+      const now = ctx.currentTime;
+      musicGain.gain.linearRampToValueAtTime(MUSIC_MENU_GAIN, now + 1.5);
+    } catch (e) {}
+  }
+  function stopMenuMusic() {
+    if (!musicSource) return;
+    try {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+      musicGain.gain.cancelScheduledValues(now);
+      musicGain.gain.setValueAtTime(musicGain.gain.value, now);
+      musicGain.gain.linearRampToValueAtTime(0, now + 0.8);
+    } catch (e) {}
+    const src = musicSource;
+    musicSource = null;
+    setTimeout(() => { try { src.stop(); } catch (e) {} }, 900);
+  }
 
   function playPreloaded(key, rate, gain) {
     const buf = AUDIO_BUFFERS[key];
@@ -4344,6 +4409,14 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     document.getElementById('menu-screen').style.display = name === 'menu' ? 'flex' : 'none';
     document.getElementById('briefing-screen').style.display = name === 'briefing' ? 'flex' : 'none';
     document.getElementById('mission-screen').style.display = name === 'mission' ? 'flex' : 'none';
+    // Musique de fond : joue en boucle dans les menus/briefing (planification),
+    // s'estompe dès l'entrée en mission pour laisser la place au stinger et
+    // aux effets sonores de l'assaut.
+    if (name === 'menu' || name === 'briefing') {
+      startMenuMusic();
+    } else {
+      stopMenuMusic();
+    }
   }
 
   function enterMission(levelId) {
@@ -4369,6 +4442,9 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     hint.textContent = t('selectOperatorHint');
     renderAll();
     showScreen('mission');
+    // Stinger d'entrée en mission (percussions), une seule fois au début du
+    // niveau — pas à chaque pièce (voir enterRoom, plus bas).
+    playPreloaded('sfx-stinger', 1.0, 0.85);
   }
 
   function enterRoom(index) {
@@ -4751,6 +4827,9 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
   document.addEventListener('pointerdown', () => {
     const ctx = getAudioCtx();
     if (ctx.state === 'suspended') ctx.resume();
+    // Idempotent (voir startMenuMusic) : couvre le cas où le contexte était
+    // encore suspendu au moment de l'affichage initial du menu.
+    startMenuMusic();
   }, { once: true });
 
   function runAssault() {
@@ -4760,6 +4839,10 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     // vraiment avant que le premier son (bris de vitre, tirs) soit requis.
     const ac = getAudioCtx();
     if (ac.state === 'suspended') ac.resume();
+    // Activation des lunettes de vision nocturne, jouée à chaque assaut
+    // (clic Go) sur une mission de nuit — renforce l'ambiance nocturne des
+    // opérateurs au moment précis où l'action démarre.
+    if (isNight) playPreloaded('sfx-nightvision', 1.0, 0.9);
     renderAll();
     hint.textContent = 'Assaut en cours...';
     let trapSoundPlayed = false;
@@ -5183,6 +5266,13 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
               spawnMuzzleFlash(marker, tipY);
             }, s * stagger);
           }
+        } else if (op.cls === 'Shadow' && !isBombRoom) {
+          // Shadow (karambit) : contrairement aux classes à distance, restait
+          // totalement silencieux à l'engagement (aucun son n'existait pour
+          // cette classe). Ajout demandé par le joueur le 27 sept. 2026 : un
+          // son de lame unique au moment du contact, pas de flash (arme
+          // silencieuse, ne déclenche jamais l'alerte).
+          playPreloaded('sfx-shadowblade', 1.0, 0.9);
         }
       }
 
@@ -5306,6 +5396,18 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
         timerFill.style.transition = 'width ' + BOMB_THRESHOLD_MS + 'ms linear';
         timerFill.setAttribute('width', '0');
       }, 300);
+      // Tic-tac de compte à rebours (son fourni par le joueur), synchronisé
+      // sur la barre de temps qui se vide. La fenêtre de désamorçage ne dure
+      // qu'environ BOMB_THRESHOLD_MS (~1.75s en temps réel) — trop courte
+      // pour une vraie boucle temps réel — donc quelques tics espacés
+      // régulièrement suffisent à donner la tension d'un compte à rebours.
+      const BOMB_TICK_COUNT = 4;
+      for (let tickIdx = 0; tickIdx < BOMB_TICK_COUNT; tickIdx++) {
+        setTimeout(
+          () => playPreloaded('sfx-bombtick', 1.0, 0.8),
+          300 + Math.round(tickIdx * BOMB_THRESHOLD_MS / BOMB_TICK_COUNT)
+        );
+      }
     }
 
     // La riposte ennemie est étalée dans le temps (un garde après l'autre,
