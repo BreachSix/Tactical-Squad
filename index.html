@@ -5318,6 +5318,22 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
         travelDuration = Math.max(150, Math.min(duration, bombExplodeAt - departureAt));
       }
 
+      // Bug corrigé le 27 sept. 2026 : cette valeur était auparavant calculée
+      // À L'INTÉRIEUR du setTimeout(..., departureAt) plus bas, donc de façon
+      // asynchrone — mais le déclencheur de riposte ennemie (plus bas, juste
+      // après la boucle assignedList.forEach) la lisait de façon SYNCHRONE,
+      // immédiatement après la boucle, avant qu'aucun setTimeout n'ait pu
+      // s'exécuter. earliestEngageEnd valait donc toujours Infinity à ce
+      // moment-là, et la condition "earliestEngageEnd < Infinity" était
+      // toujours fausse : la riposte ennemie ne s'est jamais déclenchée,
+      // dans AUCUNE pièce, depuis l'ajout de cette mécanique. departureAt et
+      // travelDuration sont déjà connus ici de façon synchrone (aucune
+      // dépendance sur le setTimeout), donc le calcul est simplement déplacé
+      // ici pour que la riposte puisse enfin le lire à temps.
+      if (!isCasualty && !isBombRoom) {
+        earliestEngageEnd = Math.min(earliestEngageEnd, departureAt + travelDuration);
+      }
+
       // Certaines formes de pièce (ex. le L, le sablier, l'arche) exigent un
       // détour par un ou plusieurs points de passage pour ne pas couper à
       // travers un mur ou le vide entre deux sections de la pièce. La
@@ -5471,7 +5487,9 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
           if (op.cls !== 'Shadow' && !isBombRoom) {
             setTimeout(fireEffectsAndCasualty, travelDuration + 550);
           }
-          if (!isBombRoom) earliestEngageEnd = Math.min(earliestEngageEnd, departureAt + travelDuration);
+          // (earliestEngageEnd est maintenant calculé plus haut, de façon
+          // synchrone — voir le commentaire du 27 sept. 2026 au début de
+          // cette itération de boucle.)
         }
       }, departureAt);
     });
