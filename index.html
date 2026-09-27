@@ -59,6 +59,7 @@
   }
   header {
     display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; row-gap: 2px;
     padding-bottom: 6px; border-bottom: 1px solid var(--wall);
     margin-bottom: 6px; flex-shrink: 0;
   }
@@ -68,9 +69,10 @@
   }
   header h1 span { color: var(--amber); }
   header .mission-tag {
-    font-size: 0.66rem; color: var(--amber); font-family: var(--font-head);
-    letter-spacing: 0.02em; font-weight: 600;
+    font-size: 1.15rem; color: var(--text); font-family: var(--font-head);
+    letter-spacing: 0.02em; font-weight: 700;
   }
+  header .mission-tag .subtitle-accent { color: var(--amber); }
   .mission-tag { font-size: 0.66rem; color: var(--text-dim); margin-bottom: 6px; flex-shrink: 0; }
   .compose-btn {
     font-family: var(--font-head); font-size: 0.68rem; letter-spacing: 0.04em;
@@ -1770,7 +1772,20 @@ function bootGame() {
   // data-i18n="clé" — appelé au chargement et à chaque changement de langue.
   function applyStaticTranslations() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
-      el.textContent = t(el.getAttribute('data-i18n'));
+      const key = el.getAttribute('data-i18n');
+      if (key === 'gameSubtitle') {
+        // Sous-titre du header : même traitement bicolore blanc/ambre que
+        // "Breach"+"Six" (demandé par le joueur le 27 sept. 2026) — le
+        // dernier mot de la traduction porte l'accent ambre, le reste reste
+        // blanc, quelle que soit la langue affichée.
+        const text = t(key);
+        const words = text.split(' ');
+        const last = words.pop();
+        el.innerHTML = (words.length ? words.join(' ') + ' ' : '') +
+          '<span class="subtitle-accent">' + last + '</span>';
+      } else {
+        el.textContent = t(key);
+      }
     });
     document.documentElement.setAttribute('lang', currentLang === 'ptbr' ? 'pt-BR' : currentLang);
   }
