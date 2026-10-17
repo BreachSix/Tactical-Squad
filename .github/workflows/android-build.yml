@@ -30,6 +30,30 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.7
+      - name: Générer l'icône du lanceur
+        run: |
+          set -e
+          SRC=../icon-512.png
+          test -f "$SRC" || { echo "icon-512.png introuvable à la racine du dépôt"; exit 1; }
+          IM=$(command -v magick || command -v convert)
+          RES=app/src/main/res
+          BG=$(${IM} "$SRC" -format '%[hex:p{4,4}]' info: | cut -c1-6)
+          echo "Couleur de fond détectée : #$BG"
+          gen() { # dossier taille_legacy taille_foreground
+            mkdir -p "$RES/mipmap-$1"
+            ${IM} "$SRC" -resize "$2x$2" "$RES/mipmap-$1/ic_launcher.png"
+            F=$3; I=$((F*66/100))
+            ${IM} "$SRC" -resize "${I}x${I}" -background none -gravity center -extent "${F}x${F}" "$RES/mipmap-$1/ic_launcher_foreground.png"
+          }
+          gen mdpi 48 108
+          gen hdpi 72 162
+          gen xhdpi 96 216
+          gen xxhdpi 144 324
+          gen xxxhdpi 192 432
+          mkdir -p "$RES/mipmap-anydpi-v26" "$RES/values"
+          printf '%s\n' '<?xml version="1.0" encoding="utf-8"?>' '<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">' '    <background android:drawable="@color/ic_launcher_background"/>' '    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>' '</adaptive-icon>' > "$RES/mipmap-anydpi-v26/ic_launcher.xml"
+          printf '%s\n' '<?xml version="1.0" encoding="utf-8"?>' '<resources>' "    <color name=\"ic_launcher_background\">#$BG</color>" '</resources>' > "$RES/values/ic_launcher_background.xml"
+          ls -R "$RES" | head -40
 
       - name: Décoder le keystore de signature
         env:
