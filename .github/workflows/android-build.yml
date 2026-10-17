@@ -33,6 +33,7 @@ jobs:
       - name: Générer l'icône du lanceur
         run: |
           set -e
+          command -v magick >/dev/null || command -v convert >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick; }
           SRC=../icon-512.png
           test -f "$SRC" || { echo "icon-512.png introuvable à la racine du dépôt"; exit 1; }
           IM=$(command -v magick || command -v convert)
