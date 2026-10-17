@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.breachsixgames.tacticalsquad"
-        minSdk 21
+        minSdk 24
         targetSdk 36
         versionCode 8
         versionName "1.0"
