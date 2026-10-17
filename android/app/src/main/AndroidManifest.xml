@@ -15,8 +15,7 @@
              publication finale sur Google Play — voir AdConfig.kt. -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
-
+            android:value="ca-app-pub-5775885539187715~3715956057" />
         <activity
             android:name=".TwaLauncherActivity"
             android:exported="true"
