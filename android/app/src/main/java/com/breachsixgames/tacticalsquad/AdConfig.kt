@@ -13,7 +13,7 @@ package com.breachsixgames.tacticalsquad
 object AdConfig {
 
     /** true = identifiants de test Google (safe à cliquer autant que voulu). */
-    const val USE_TEST_ADS = true
+    const val USE_TEST_ADS = false
 
     // --- Production (compte AdMob breachsixgames@gmail.com) ---
     private const val PROD_APP_ID = "ca-app-pub-5775885539187715~3715956057"
