@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pourquoi les ennemis ne bougent pas — BreachSix: Tactical Squad</title>
+<meta name="description" content="Pourquoi BreachSix: Tactical Squad résout un plan préparé plutôt que de simuler des ennemis en temps réel, et l&#x27;histoire d&#x27;un bogue de riposte invisible débusqué avec un navigateur automatisé.">
+<link rel="canonical" href="https://breachsixgames.com/coulisses-pourquoi-les-ennemis-ne-bougent-pas.html">
+
+<meta name="theme-color" content="#101316">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="BreachSix: Tactical Squad">
+<meta property="og:title" content="Pourquoi les ennemis ne bougent pas">
+<meta property="og:description" content="Pourquoi BreachSix: Tactical Squad résout un plan préparé plutôt que de simuler des ennemis en temps réel, et l&#x27;histoire d&#x27;un bogue de riposte invisible débusqué avec un navigateur automatisé.">
+<meta property="og:url" content="https://breachsixgames.com/coulisses-pourquoi-les-ennemis-ne-bougent-pas.html">
+<meta property="og:image" content="https://breachsixgames.com/icon-512.png">
+<meta property="og:locale" content="fr_CA">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="/icon-192.png">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Pourquoi les ennemis ne bougent pas", "name": "Pourquoi les ennemis ne bougent pas", "description": "Pourquoi BreachSix: Tactical Squad résout un plan préparé plutôt que de simuler des ennemis en temps réel, et l'histoire d'un bogue de riposte invisible débusqué avec un navigateur automatisé.", "url": "https://breachsixgames.com/coulisses-pourquoi-les-ennemis-ne-bougent-pas.html", "inLanguage": "fr", "datePublished": "2026-10-21", "dateModified": "2026-10-21", "author": {"@type": "Organization", "name": "BreachSix Games", "url": "https://breachsixgames.com/"}, "publisher": {"@type": "Organization", "name": "BreachSix Games", "url": "https://breachsixgames.com/", "logo": {"@type": "ImageObject", "url": "https://breachsixgames.com/icon-512.png"}}, "isPartOf": {"@type": "WebSite", "name": "BreachSix: Tactical Squad", "url": "https://breachsixgames.com/"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://breachsixgames.com/"}, {"@type": "ListItem", "position": 2, "name": "Coulisses", "item": "https://breachsixgames.com/coulisses.html"}, {"@type": "ListItem", "position": 3, "name": "Pourquoi les ennemis ne bougent pas", "item": "https://breachsixgames.com/coulisses-pourquoi-les-ennemis-ne-bougent-pas.html"}]}]}</script>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/icon-192.png" alt="" width="36" height="36"><span>BreachSix<small>Tactical Squad</small></span></a>
+    <nav class="nav" aria-label="Navigation principale"><a href="/guide.html">Guide</a><a href="/univers.html">Univers</a><a href="/coulisses.html" aria-current="page">Coulisses</a><a href="/faq.html">FAQ</a><a href="/a-propos.html">À propos</a><a href="/contact.html">Contact</a><a class="cta" href="/">Jouer</a></nav>
+  </div>
+</header>
+<main id="contenu" class="wrap-main">
+<p class="crumbs"><a href="/">Accueil</a> › <a href="/coulisses.html">Coulisses</a> › Pourquoi les ennemis ne bougent pas</p>
+<article>
+<h1>Pourquoi les ennemis ne bougent pas</h1>
+<p class="lead">Dans BreachSix: Tactical Squad, les gardes restent à leur poste. Ce n'est pas un oubli : c'est la décision de conception qui structure tout le jeu. Voici ses raisons, ses limites, et comment nous avons failli passer à côté d'un bogue lié à elle.</p>
+<p class="meta">Par l'équipe BreachSix Games · Mis à jour le 21 octobre 2026</p>
+
+<nav class="toc" aria-label="Sommaire"><strong>Sommaire</strong><ol><li><a href="#le-choix">Deux façons de faire un jeu d'assaut</a></li><li><a href="#avantages">Ce que ce choix apporte</a></li><li><a href="#limites">Ce que ce choix coûte</a></li><li><a href="#bogue">L'histoire d'un bogue invisible</a></li><li><a href="#lecons">Ce que nous en avons retenu</a></li></ol></nav>
+<h2 id="le-choix">Deux façons de faire un jeu d'assaut</h2>
+<p>Il existe deux grandes familles de jeux tactiques d'assaut. Dans la première, les ennemis bougent, réagissent et visent en temps réel : le joueur est un pilote, et le résultat dépend de ses réflexes. Dans la seconde, le joueur <strong>prépare</strong> un plan, puis le jeu l'exécute : le joueur est un planificateur, et le résultat dépend de la qualité de sa préparation.</p>
+<p>Nous avons choisi la seconde. L'inspiration vient des anciens jeux de type « Breach », où l'on assignait des équipes à des points d'entrée avant de lancer l'assaut. Notre objectif était un jeu <strong>simple, amusant et sans frustration</strong>, jouable en quelques minutes sur un téléphone.</p>
+
+<h2 id="avantages">Ce que ce choix apporte</h2>
+<ul>
+  <li><strong>Des résultats lisibles.</strong> Comme les positions sont connues et la résolution déterministe, on peut toujours expliquer pourquoi un plan a réussi ou échoué.</li>
+  <li><strong>Aucune frustration de réflexes.</strong> Un joueur peut prendre le temps qu'il veut : il n'y a pas de chronomètre sauf pour une bombe, et même là, la vitesse est celle de l'opérateur, pas celle du joueur.</li>
+  <li><strong>Une accessibilité naturelle.</strong> Pas besoin de précision au doigt ni de bonne connexion, le jeu se joue hors ligne.</li>
+  <li><strong>Un équilibrage vérifiable.</strong> Une pièce se résout toujours de la même façon pour le même plan. Nous pouvons donc tester des milliers de combinaisons par des moyens automatiques.</li>
+</ul>
+
+<h2 id="limites">Ce que ce choix coûte</h2>
+<p>Un jeu planifié risque de paraître « figé » : les ennemis n'ont aucune vie propre. Nous avons donc compensé de deux façons. D'abord par la <strong>variété des menaces</strong> (garde standard, garde blindé avec otage, tireur d'élite, portes piégées), qui impose des décisions différentes selon la pièce. Ensuite par la <strong>riposte ennemie</strong> : une fois le premier garde engagé, les gardes encore debout tirent à leur tour, avec un éclat, un son et une pulsation rouge. La riposte ne change pas la logique du jeu, mais elle rend visible le danger.</p>
+<p>Un test en vidéo nous a d'ailleurs signalé l'absence perçue de riposte ennemie. Nous avons confirmé que l'absence de <em>mouvement</em> était voulue, et nous avons cherché pourquoi la riposte, elle, n'était pas perçue.</p>
+
+<h2 id="bogue">L'histoire d'un bogue invisible</h2>
+<p>La première réponse a été de rendre la riposte plus visible : halo plus grand, durée plus longue, pulsation rouge. Le joueur a retesté et n'a vu aucune différence. Une deuxième piste est venue : une couleur de remplissage rouge, posée une première fois sur un garde neutralisé, restait collée à tous les gardes des pièces suivantes, ce qui rendait tous les ennemis rouges en permanence et masquait tout changement. Nous avons corrigé cela aussi.</p>
+<p>Mais la riposte restait invisible. L'analyse des vidéos image par image ne donnait rien : un effet de 400 millisecondes passe entre deux images d'une vidéo de téléphone. Nous avons alors changé de méthode : piloter le jeu avec un <strong>navigateur automatisé</strong> et observer directement les changements dans la page, horodatés à la milliseconde, plutôt que de regarder des vidéos.</p>
+<p>Le résultat a été sans appel : <strong>la riposte ne se déclenchait jamais</strong>, dans aucune pièce, depuis son ajout. Le moment où le premier opérateur engage sa cible était calculé de façon différée, à l'intérieur d'une temporisation, alors que le code qui décidait de lancer la riposte s'exécutait immédiatement, avant que ce calcul n'ait eu lieu. La condition était donc toujours fausse. Les améliorations visuelles précédentes n'avaient aucune chance de servir : on peaufinait l'apparence d'un effet qui ne s'affichait jamais.</p>
+<p>La correction a consisté à calculer ce moment plus tôt, dès que les informations nécessaires étaient connues. Revérifiée avec le même outil, la riposte s'est déclenchée correctement, en alternance échelonnée entre les gardes. Une dernière retouche a ramené l'éclat à la même taille que celui des opérateurs, une fois qu'il était enfin visible et jugé trop imposant.</p>
+
+<h2 id="lecons">Ce que nous en avons retenu</h2>
+<ol>
+  <li><strong>Un effet invisible n'est pas toujours un effet trop discret.</strong> Avant d'agrandir un halo, vérifier qu'il s'affiche.</li>
+  <li><strong>Mesurer vaut mieux que regarder.</strong> Un navigateur automatisé qui observe la page capte ce qu'une vidéo manque.</li>
+  <li><strong>Écouter le joueur, mais chercher la vraie cause.</strong> Son impression était juste : quelque chose ne marchait pas. Notre première explication, elle, était fausse.</li>
+</ol>
+<div class="callout"><p>Pour comprendre les règles de menace qui découlent de ce choix, lisez <a href="/guide-ennemis.html">Ennemis et menaces</a>. Pour la manière dont nous avons équilibré la difficulté, lisez <a href="/coulisses-equilibrer-la-difficulte.html">Équilibrer la difficulté</a>.</p></div>
+</article>
+<section class="related"><h2 id="a-lire-aussi">À lire aussi</h2><div class="grid"><a class="card" href="/coulisses-equilibrer-la-difficulte.html"><h3>Équilibrer la difficulté</h3><p>Le plafond de cinq menaces et la naissance du tireur d&#x27;élite, deux leçons d&#x27;équilibrage.</p></a><a class="card" href="/guide-ennemis.html"><h3>Ennemis et menaces</h3><p>Gardes, garde blindé, tireur d&#x27;élite, riposte et pièges : comprendre ce qui coûte un opérateur.</p></a><a class="card" href="/guide-debuter.html"><h3>Débuter en cinq minutes</h3><p>Le déroulement complet d&#x27;une mission, du menu jusqu&#x27;à l&#x27;écran de résultat.</p></a></div></section>
+<aside class="cta-box"><p><strong>Prêt à passer à l'action ?</strong></p><p>BreachSix: Tactical Squad est gratuit, joue hors connexion et fonctionne sur Android, dans le navigateur et dans Telegram.</p><a class="btn" href="/">Lancer le jeu</a></aside>
+</main>
+<footer class="site-footer">
+  <div class="cols">
+    <div><h2>Le jeu</h2><ul>
+      <li><a href="/">Jouer à BreachSix: Tactical Squad</a></li>
+      <li><a href="/guide.html">Guide complet</a></li>
+      <li><a href="/guide-debuter.html">Débuter</a></li>
+      <li><a href="/univers.html">L'univers</a></li>
+    </ul></div>
+    <div><h2>Comprendre le jeu</h2><ul>
+      <li><a href="/guide-operateurs.html">Les opérateurs</a></li>
+      <li><a href="/guide-ennemis.html">Ennemis et menaces</a></li>
+      <li><a href="/guide-strategies.html">Stratégies avancées</a></li>
+      <li><a href="/coulisses.html">Coulisses de conception</a></li>
+    </ul></div>
+    <div><h2>Le studio</h2><ul>
+      <li><a href="/a-propos.html">À propos</a></li>
+      <li><a href="/faq.html">Foire aux questions</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/plan-du-site.html">Plan du site</a></li>
+    </ul></div>
+    <div><h2>Légal</h2><ul>
+      <li><a href="/privacy.html">Politique de confidentialité</a></li>
+      <li><a href="/terms.html">Conditions d'utilisation</a></li>
+      <li><a href="mailto:breachstudios.dev@gmail.com">breachstudios.dev@gmail.com</a></li>
+    </ul></div>
+  </div>
+  <p class="legal">© 2026 BreachSix Games. BreachSix, Breach Six et Combine Ashgard sont des noms et univers fictifs créés pour le jeu. Toute ressemblance avec des organisations réelles serait fortuite.</p>
+</footer>
+</body>
+</html>
