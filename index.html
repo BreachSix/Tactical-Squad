@@ -1939,6 +1939,15 @@ function bootGame() {
       }
     });
     document.documentElement.setAttribute('lang', currentLang === 'ptbr' ? 'pt-BR' : currentLang);
+           // Liens légaux : suivent la langue du joueur (fr = pages d'origine)
+    const sfx = currentLang === 'fr' ? '' : '-' + (currentLang === 'ptbr' ? 'pt-br' : currentLang);
+    document.querySelectorAll('a[href*="privacy"], a[href*="terms"]').forEach(a => {
+      const base = a.getAttribute('data-base') || a.getAttribute('href');
+      if (!/^\/?(privacy|terms)(-[a-z-]+)?\.html$/.test(base)) return;
+      const name = base.indexOf('terms') !== -1 ? 'terms' : 'privacy';
+      a.setAttribute('data-base', name + '.html');
+      a.setAttribute('href', (base.charAt(0) === '/' ? '/' : '') + name + sfx + '.html');
+    });
   }
 
   function setLanguage(lang) {
