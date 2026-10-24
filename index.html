@@ -95,6 +95,9 @@
 
   .room-wrap { position: relative; margin-bottom: 6px; flex-shrink: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
   svg { display: block; width: auto; height: 100%; max-width: 100%; max-height: 34vh; touch-action: manipulation; }
+  /* iOS Safari: un SVG avec viewBox seul et height:100% dans un parent sans hauteur définie s'écrase à 0.
+     On donne au plan de la pièce une largeur explicite et une hauteur déduite du viewBox (rendu identique ailleurs). */
+  #room-svg { width: 100%; height: auto; max-height: 34vh; }
 
   body.night {
     --amber-dim: #6b5822;
