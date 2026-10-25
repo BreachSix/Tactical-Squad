@@ -851,6 +851,9 @@ function bootGame() {
       adsWatchedPlural: ' pubs visionnées',
       adFailedMsg: 'Pub non complétée — réessaie pour débloquer un skin.',
       adWatchedToastPrefix: 'Pub visionnée (',
+      watchAdBtnWeb: '🔓 Débloquer un skin',
+      watchAdBtnWebLoading: 'Déblocage…',
+      adWatchedToastPrefixWeb: 'Progression (',
       closeBtn: 'Fermer',
       lockedLabel: 'Verrouillé',
       adSkinAvailableSub: 'Ce skin d\'arme est maintenant disponible.',
@@ -967,6 +970,9 @@ function bootGame() {
       adsWatchedPlural: ' ads watched',
       adFailedMsg: 'Ad not completed — try again to unlock a skin.',
       adWatchedToastPrefix: 'Ad watched (',
+      watchAdBtnWeb: '🔓 Unlock a skin',
+      watchAdBtnWebLoading: 'Unlocking…',
+      adWatchedToastPrefixWeb: 'Progress (',
       closeBtn: 'Close',
       lockedLabel: 'Locked',
       adSkinAvailableSub: 'This weapon skin is now available.',
@@ -1083,6 +1089,9 @@ function bootGame() {
       adsWatchedPlural: ' anuncios vistos',
       adFailedMsg: 'Anuncio no completado — inténtalo de nuevo para desbloquear un skin.',
       adWatchedToastPrefix: 'Anuncio visto (',
+      watchAdBtnWeb: '🔓 Desbloquear un skin',
+      watchAdBtnWebLoading: 'Desbloqueando…',
+      adWatchedToastPrefixWeb: 'Progreso (',
       closeBtn: 'Cerrar',
       lockedLabel: 'Bloqueado',
       adSkinAvailableSub: 'Este skin de arma ya está disponible.',
@@ -1199,6 +1208,9 @@ function bootGame() {
       adsWatchedPlural: ' anúncios assistidos',
       adFailedMsg: 'Anúncio não concluído — tente novamente para desbloquear uma skin.',
       adWatchedToastPrefix: 'Anúncio assistido (',
+      watchAdBtnWeb: '🔓 Desbloquear uma skin',
+      watchAdBtnWebLoading: 'Desbloqueando…',
+      adWatchedToastPrefixWeb: 'Progresso (',
       closeBtn: 'Fechar',
       lockedLabel: 'Bloqueado',
       adSkinAvailableSub: 'Esta skin de arma já está disponível.',
@@ -1315,6 +1327,9 @@ function bootGame() {
       adsWatchedPlural: ' Anzeigen gesehen',
       adFailedMsg: 'Werbung nicht abgeschlossen — versuche es erneut, um einen Skin freizuschalten.',
       adWatchedToastPrefix: 'Anzeige gesehen (',
+      watchAdBtnWeb: '🔓 Skin freischalten',
+      watchAdBtnWebLoading: 'Wird freigeschaltet…',
+      adWatchedToastPrefixWeb: 'Fortschritt (',
       closeBtn: 'Schließen',
       lockedLabel: 'Gesperrt',
       adSkinAvailableSub: 'Dieser Waffen-Skin ist jetzt verfügbar.',
@@ -1431,6 +1446,9 @@ function bootGame() {
       adsWatchedPlural: ' pubblicità guardate',
       adFailedMsg: 'Pubblicità non completata — riprova per sbloccare uno skin.',
       adWatchedToastPrefix: 'Pubblicità guardata (',
+      watchAdBtnWeb: '🔓 Sblocca uno skin',
+      watchAdBtnWebLoading: 'Sblocco in corso…',
+      adWatchedToastPrefixWeb: 'Progresso (',
       closeBtn: 'Chiudi',
       lockedLabel: 'Bloccata',
       adSkinAvailableSub: 'Questo skin dell\'arma è ora disponibile.',
@@ -1547,6 +1565,9 @@ function bootGame() {
       adsWatchedPlural: ' реклам просмотрено',
       adFailedMsg: 'Реклама не досмотрена — попробуйте снова, чтобы разблокировать скин.',
       adWatchedToastPrefix: 'Реклама просмотрена (',
+      watchAdBtnWeb: '🔓 Разблокировать скин',
+      watchAdBtnWebLoading: 'Разблокировка…',
+      adWatchedToastPrefixWeb: 'Прогресс (',
       closeBtn: 'Закрыть',
       lockedLabel: 'Заблокировано',
       adSkinAvailableSub: 'Этот скин оружия теперь доступен.',
@@ -1663,6 +1684,9 @@ function bootGame() {
       adsWatchedPlural: '回視聴',
       adFailedMsg: '広告が完了しませんでした——もう一度試してスキンを解除してください。',
       adWatchedToastPrefix: '広告視聴済み（',
+      watchAdBtnWeb: '🔓 スキンを解除する',
+      watchAdBtnWebLoading: '解除中…',
+      adWatchedToastPrefixWeb: '進行状況（',
       closeBtn: '閉じる',
       lockedLabel: 'ロック中',
       adSkinAvailableSub: 'この武器スキンが利用可能になりました。',
@@ -1779,6 +1803,9 @@ function bootGame() {
       adsWatchedPlural: '개 광고 시청',
       adFailedMsg: '광고가 완료되지 않았습니다 — 스킨을 해제하려면 다시 시도하세요.',
       adWatchedToastPrefix: '광고 시청 (',
+      watchAdBtnWeb: '🔓 스킨 잠금 해제',
+      watchAdBtnWebLoading: '해제 중…',
+      adWatchedToastPrefixWeb: '진행 (',
       closeBtn: '닫기',
       lockedLabel: '잠김',
       adSkinAvailableSub: '이 무기 스킨을 이제 사용할 수 있습니다.',
@@ -1895,6 +1922,9 @@ function bootGame() {
       adsWatchedPlural: '个广告已观看',
       adFailedMsg: '广告未完成——请重试以解锁皮肤。',
       adWatchedToastPrefix: '已观看广告（',
+      watchAdBtnWeb: '🔓 解锁皮肤',
+      watchAdBtnWebLoading: '解锁中…',
+      adWatchedToastPrefixWeb: '进度（',
       closeBtn: '关闭',
       lockedLabel: '已锁定',
       adSkinAvailableSub: '该武器皮肤现已可用。',
@@ -4821,10 +4851,27 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
   // encore mise à jour avec le pont natif), on retombe sur la pub simulée
   // — ça ne casse jamais le jeu, ça n'active juste pas les vraies pubs.
   let nativeAdPort = null;
+  // Web (iPhone, navigateur) : aucune vraie pub disponible -> libellés « Débloquer un skin ».
+  // Android (app TWA) et Telegram gardent « Regarder une pub ».
+  try { if (document.referrer.indexOf('android-app://') === 0) localStorage.setItem('breachsix-twa', '1'); } catch (e) {}
+  function isWebNoAds() {
+    if (nativeAdPort || (typeof isTelegram !== 'undefined' && isTelegram)) return false;
+    try { if (localStorage.getItem('breachsix-twa') === '1') return false; } catch (e) {}
+    return true;
+  }
+  function adKey(k) { return isWebNoAds() ? k + 'Web' : k; }
+  function refreshAdBtn() {
+    const b = document.getElementById('watch-ad-btn');
+    if (!b || watchingAd) return;
+    b.setAttribute('data-i18n', adKey('watchAdBtn'));
+    b.textContent = t(adKey('watchAdBtn'));
+  }
   window.addEventListener('message', (event) => {
     const port = event.ports && event.ports[0];
     if (!port) return;
     nativeAdPort = port;
+    try { localStorage.setItem('breachsix-twa', '1'); } catch (e) {}
+    setTimeout(refreshAdBtn, 0);
     nativeAdPort.onmessage = (portEvent) => {
       let msg;
       try { msg = JSON.parse(portEvent.data); } catch (e) { return; }
@@ -4833,6 +4880,8 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
       }
     };
   });
+
+  refreshAdBtn();
 
   // --- AdsGram (Telegram Mini App) ---
   // Réseau publicitaire natif aux Mini Apps Telegram — pas de pont requis,
@@ -4955,7 +5004,7 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     watchingAd = false;
     const btn = document.getElementById('watch-ad-btn');
     btn.disabled = false;
-    btn.textContent = t('watchAdBtn');
+    btn.textContent = t(adKey('watchAdBtn'));
     if (!success) {
       showToast(t('adFailedMsg'));
       return;
@@ -4972,7 +5021,7 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
         sub: t('adSkinAvailableSub'),
       });
     } else {
-      showToast(t('adWatchedToastPrefix') + adsWatched + ')');
+      showToast(t(adKey('adWatchedToastPrefix')) + adsWatched + ')');
     }
   }
 
@@ -4981,7 +5030,7 @@ const LEVEL_I18N = {"en": {"1": {"name": "Level 1 · Residence", "sub": "Easy ·
     watchingAd = true;
     const btn = document.getElementById('watch-ad-btn');
     btn.disabled = true;
-    btn.textContent = t('watchAdBtnLoading');
+    btn.textContent = t(adKey('watchAdBtnLoading'));
     requestRewardedAd();
   });
 
